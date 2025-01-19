@@ -5,7 +5,7 @@ from keywords import *
 import comp_stat as cs
 
 
-class BranchStatement(object):
+class IfElse(object):
 
     def __init__(self,statement):
         self.statement = statement
@@ -20,7 +20,7 @@ class BranchStatement(object):
         then_index = self.statement.find(THEN)
 
         if then_index==-1:
-            raise BranchError(self.statement,"'then' statement not found.")
+            raise IfElseError(self.statement,"'then' statement not found.")
         else:
             try:
                 self.condition = ConditionalStatement(self.statement[2:then_index])
@@ -44,7 +44,7 @@ class BranchStatement(object):
                     self.else_body = cs.CompoundStatement(self.statement[else_pos+4:-2])
                 else:
                     self.then = cs.CompoundStatement(self.statement[then_index+4:-2])
-            except BranchError:
+            except IfElseError:
                 print(self.statement,"Unknown Error")
 
     def eval(self,state):
@@ -53,5 +53,5 @@ class BranchStatement(object):
                 self.then.eval(state)
             elif self.else_body!=None:
                 self.else_body.eval(state)
-        except BranchError:
+        except IfElseError:
             print(self.statement,"Error in Evaluation")

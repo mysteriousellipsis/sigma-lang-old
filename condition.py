@@ -72,12 +72,12 @@ class ConditionalStatement(object):
             elif pos6!=-1:
                 self.expr_type = NECondition(self.expression[:pos6],self.expression[pos6+2:])
             else:
-                raise BranchError(self.expression,"Invalid Syntax in Conditional Statement")
-        except BranchError:
+                raise IfElseError(self.expression,"Invalid Syntax in Conditional Statement")
+        except IfElseError:
             print(self.expression,"Error in Parsing Conditional Statement")
 
     def eval(self,state):
         try:
             return self.expr_type.eval(state)
-        except BranchError:
+        except IfElseError:
             print(self.expression,"Error in Evaluation of conditional Statement")

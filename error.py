@@ -18,7 +18,7 @@ class EvaluationError(Error):
         print("Error in Evaluating: ",expression)
         print(message)
 
-class BranchError(Error):
+class IfElseError(Error):
 
     def __init__(self,expression,message):
         print("Error in Branching Statement : ",expression)

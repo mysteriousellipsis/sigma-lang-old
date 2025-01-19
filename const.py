@@ -1,3 +1,7 @@
 # ASSIGNMENT 
 
 ASSIGNMENT_OPERATOR = '='
+IF_OPEN = "if"
+IF_CLOSE = "fi"
+WHILE_OPEN = "while"
+WHILE_CLOSE = "elihw"
