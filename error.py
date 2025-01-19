@@ -3,7 +3,9 @@ class Error(Exception):
     pass
 
 class AssignmentError(Error):
-    """Exception raised during parsing and evaluating of Assignment Statement"""
+    '''
+    error while handling assignments
+    '''
 
     def __init__(self,expression,message):
         print("Error in parsing the Assignment Statement: ",expression)
