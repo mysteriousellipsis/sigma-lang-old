@@ -1,83 +1,125 @@
-from keywords import *
+import const
 from error import *
 from expression import *
 
-class GenericCondition(object):
 
-    def __init__(self,left,right):
+class GenericCondition(object):
+    """
+    generic conditional statements
+    """
+
+    def __init__(self, left, right):
         self.right = Expression(right)
         self.left = Expression(left)
 
-class GTETCondition(GenericCondition):
 
-    def eval(self,state):
-        return self.left.eval(state)>=self.right.eval(state)
+class GreaterThanEqualTo(GenericCondition):
+    """
+    conditional for >=
+    """
 
-class LTETCondition(GenericCondition):
+    def eval(self, state):
+        return self.left.eval(state) >= self.right.eval(state)
 
-    def eval(self,state):
-        return self.left.eval(state)<=self.right.eval(state)
 
-class ETCondition(GenericCondition):
+class LessThanEqualTo(GenericCondition):
+    """
+    conditional for <=
+    """
 
-    def eval(self,state):
-        return self.left.eval(state)==self.right.eval(state)
+    def eval(self, state):
+        return self.left.eval(state) <= self.right.eval(state)
 
-class GTCondition(GenericCondition):
 
-    def eval(self,state):
-        return self.left.eval(state)>self.right.eval(state)
+class EqualTo(GenericCondition):
+    """
+    conditional for ==
+    """
 
-class LTCondition(GenericCondition):
+    def eval(self, state):
+        return self.left.eval(state) == self.right.eval(state)
 
-    def eval(self,state):
-        return self.left.eval(state)<self.right.eval(state)
 
-class NECondition(GenericCondition):
+class GreaterThan(GenericCondition):
+    """
+    conditional for >
+    """
 
-    def eval(self,state):
-        return self.left.eval(state)!=self.right.eval(state)
+    def eval(self, state):
+        return self.left.eval(state) > self.right.eval(state)
+
+
+class LessThan(GenericCondition):
+    """
+    conditional for <
+    """
+
+    def eval(self, state):
+        return self.left.eval(state) < self.right.eval(state)
+
+
+class NotEqual(GenericCondition):
+    """
+    conditional for !=
+    """
+
+    def eval(self, state):
+        return self.left.eval(state) != self.right.eval(state)
+
 
 class ConditionalStatement(object):
+    """
+    conditional statemnets
+    """
 
-    def __init__(self,expression):
+    def __init__(self, expression):
         self.expression = expression
         self.expr_type = None
 
         self.parse()
 
     def parse(self):
+        # Done for ease in implementation
+        # Can be optimized for better performance
+        # By checking and finding sequentially.
+        gtesymbol = self.expression.find(">=")
+        ltesymbol = self.expression.find("<=")
+        equalsymbol = self.expression.find("==")
+        greatersymbol = self.expression.find(">")
+        lesssymbol = self.expression.find("<")
+        notequalsymbol = self.expression.find("!=")
 
-        try:
-            #Done for ease in implementation
-            #Can be optimized for better performance
-            #By checking and finding sequentially.
-            pos1 = self.expression.find(">=")
-            pos2 = self.expression.find("<=")
-            pos3 = self.expression.find("==")
-            pos4 = self.expression.find(">")
-            pos5 = self.expression.find("<")
-            pos6 = self.expression.find("!=")
+        if gtesymbol != -1:
+            self.expr_type = GreaterThanEqualTo(
+                self.expression[:gtesymbol], self.expression[gtesymbol + 2 :]
+            )
+        elif ltesymbol != -1:
+            self.expr_type = LessThanEqualTo(
+                self.expression[:ltesymbol], self.expression[ltesymbol + 2 :]
+            )
+        elif equalsymbol != -1:
+            self.expr_type = EqualTo(
+                self.expression[:equalsymbol], self.expression[equalsymbol + 2 :]
+            )
+        elif greatersymbol != -1:
+            self.expr_type = GreaterThan(
+                self.expression[:greatersymbol], self.expression[greatersymbol + 1 :]
+            )
+        elif lesssymbol != -1:
+            self.expr_type = LessThan(
+                self.expression[:lesssymbol], self.expression[lesssymbol + 1 :]
+            )
+        elif notequalsymbol != -1:
+            self.expr_type = NotEqual(
+                self.expression[:notequalsymbol], self.expression[notequalsymbol + 2 :]
+            )
+        else:
+            raise IfElseError(
+                self.expression, "logic operators must be surrounded by values"
+            )
 
-            if pos1!=-1:
-                self.expr_type = GTETCondition(self.expression[:pos1],self.expression[pos1+2:])
-            elif pos2!=-1:
-                self.expr_type = LTETCondition(self.expression[:pos2],self.expression[pos2+2:])
-            elif pos3!=-1:
-                self.expr_type = ETCondition(self.expression[:pos3],self.expression[pos3+2:])
-            elif pos4!=-1:
-                self.expr_type = GTCondition(self.expression[:pos4],self.expression[pos4+1:])
-            elif pos5!=-1:
-                self.expr_type = LTCondition(self.expression[:pos5],self.expression[pos5+1:])
-            elif pos6!=-1:
-                self.expr_type = NECondition(self.expression[:pos6],self.expression[pos6+2:])
-            else:
-                raise IfElseError(self.expression,"Invalid Syntax in Conditional Statement")
-        except IfElseError:
-            print(self.expression,"Error in Parsing Conditional Statement")
-
-    def eval(self,state):
+    def eval(self, state):
         try:
             return self.expr_type.eval(state)
         except IfElseError:
-            print(self.expression,"Error in Evaluation of conditional Statement")
+            print(self.expression, "Error in Evaluation of conditional Statement")

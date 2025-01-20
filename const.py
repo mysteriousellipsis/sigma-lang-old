@@ -1,7 +1,19 @@
-# ASSIGNMENT 
-
 ASSIGNMENT_OPERATOR = '='
 IF_OPEN = "if"
 IF_CLOSE = "fi"
 WHILE_OPEN = "while"
 WHILE_CLOSE = "elihw"
+DO = "do"
+DONE = "done"
+PLUS = "+"
+MINUS = "-"
+MULTIPLY = "*"
+DIVIDE = "/"
+PARAN_OPEN = "("
+PARAN_CLOSE = ")"
+THEN = "then"
+ELSE = "else"
+PRINT = "print"
+EOL_SYMBOL = ";"
+COMMENT_OPEN = "<!--"
+COMMENT_CLOSE = "-->"

@@ -1,4 +1,4 @@
-from keywords import *
+import const
 from error import *
 from expression import *
 from condition import *
@@ -7,32 +7,32 @@ import comp_stat as cs
 
 class WhileStatement(object):
 
-	def __init__(self,body):
-		self.block = body
-		self.condition = None
-		self.exec = None
+    def __init__(self, body):
+        self.block = body
+        self.condition = None
+        self.exec = None
 
-		self.parse()
+        self.parse()
 
-	def parse(self):
+    def parse(self):
 
-		do_pos = self.block.find(DO)
+        do_pos = self.block.find(const.DO)
 
-		if do_pos==-1:
-			raise LoopError(self.block,"Missing 'do' in 'while' block")
-		else:
+        if do_pos == -1:
+            raise LoopError(self.block, "Missing 'do' in 'while' block")
+        else:
 
-			try:
-				self.condition = ConditionalStatement(self.block[5:do_pos])
-			except LoopError:
-				print("Error in conditonal Statement in 'while' loop : ",self.block)
+            try:
+                self.condition = ConditionalStatement(self.block[5:do_pos])
+            except LoopError:
+                print("Error in conditonal Statement in 'while' loop : ", self.block)
 
-			try:	
-				self.exec = cs.CompoundStatement(self.block[do_pos+2:-4])
-			except LoopError:
-				print("Error in body of the 'while' loop : ",self.exec)
+            try:
+                self.exec = cs.CompoundStatement(self.block[do_pos + 2 : -4])
+            except LoopError:
+                print("Error in body of the 'while' loop : ", self.exec)
 
-	def eval(self,state):
+    def eval(self, state):
 
-		while self.condition.eval(state):
-			self.exec.eval(state)
+        while self.condition.eval(state):
+            self.exec.eval(state)

@@ -1,6 +1,5 @@
 from error import *
 from expression import *
-from keywords import *
 import const
             
 class Assignment(object):
@@ -21,7 +20,7 @@ class Assignment(object):
         splits up into left and right
         throws an error when 
         '''
-        count = self.statemnent.count(const.ASSIGNMENT_OPERATOR)
+        count = self.statement.count(const.ASSIGNMENT_OPERATOR)
         if count == 1:
             # split the statement into the left and right of the equal sign
             index = self.statement.index('=')
